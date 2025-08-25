@@ -31,7 +31,7 @@ public class ItemServiceImpl implements ItemService {
 
         if (itemRepository.findItem(itemId) != null) {
             Item itemOld = findItem(itemId);
-            if (userId != itemOld.getOwner()) {
+            if (!userId.equals(itemOld.getOwner())) {
                 throw new NotFoundException("Пользователь не подходит");
             }
             return itemRepository.updateItem(itemId, itemDto, userId);

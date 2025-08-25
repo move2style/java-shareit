@@ -47,7 +47,7 @@ public class InMemoryItemRepository implements ItemRepository {
         List<Item> itemList = new ArrayList<>();
 
         for (Item item : itemMap.values()) {
-            if (item.getOwner() == userId) {
+            if (item.getOwner().equals(userId)) {
                 itemList.add(item);
             }
         }
