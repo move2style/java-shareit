@@ -72,7 +72,7 @@ public class UserServiceImpl implements UserService {
     private void validateUserUpdateEmail(User user) {
         List<User> listUser = new LinkedList<>(userRepository.findAllUser());
         for (User users : listUser) {
-            if (users.getEmail().equals(user.getEmail()) && users.getId().equals(user.getId())) {
+            if (users.getEmail().equals(user.getEmail()) && !users.getId().equals(user.getId())) {
                 throw new UnsupportedOperationException();
             }
         }
