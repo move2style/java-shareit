@@ -8,9 +8,6 @@ import java.util.Collection;
 
 import static ru.practicum.shareit.user.dto.UserMapper.toDto;
 
-/**
- * TODO Sprint add-controllers.
- */
 @RestController
 @RequestMapping(path = "/users")
 public class UserController {
