@@ -5,7 +5,7 @@ target/
 !**/src/test/**/target/
         *.class
         *.jar
-        .DS_Store
+        *.DS_Store
         *.mv.db
 
 
