@@ -1,0 +1,42 @@
+name: Build and Test #Имя твоего workflow
+
+on: #Когда запускать workflow
+  push:
+    branches: [ "main" ] #Запускать при push в ветку main
+  pull_request:
+    branches: [ "main" ] #Запускать при pull request в ветку main
+
+jobs: #Список задач
+
+  build: #Задача сборки
+
+    runs-on: ubuntu-latest #Выполнять на Ubuntu
+
+    services: #Определение сервисов
+      postgres: #Имя сервиса (любое)
+        image: postgres:latest #Используемый Docker-образ
+        ports: #Сопоставление портов
+          - "5432:5432" #Порт хоста:Порт контейнера
+        env: #Переменные окружения
+          POSTGRES_USER: dbuser #Имя пользователя PostgreSQL
+          POSTGRES_PASSWORD: 12345 #Пароль пользователя
+          POSTGRES_DB: shareit #Имя базы данных
+        options: >- #Опции запуска контейнера
+          --health-cmd pg_isready #Команда проверки работоспособности
+          --health-interval 10s #Интервал проверки
+          --health-timeout 5s #Время ожидания
+          --health-retries 5 #Количество попыток
+
+    steps: #Шаги, выполняемые в задаче
+      - uses: actions/checkout@v3 #Выгрузить код из репозитория
+      - name: Set up JDK 17 #Установить Java 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Grant execute permission for gradlew #Сделать gradlew исполняемым
+        run: chmod +x gradlew
+
+      - name: Build with Gradle #Собрать проект
+        run: ./gradlew build #ИЛИ mvn clean install, если у тебя Maven
