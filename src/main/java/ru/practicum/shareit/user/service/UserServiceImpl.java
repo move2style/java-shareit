@@ -2,13 +2,15 @@ package ru.practicum.shareit.user.service;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.practicum.shareit.user.User;
+import ru.practicum.shareit.exception.NotFoundException;
+import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.dao.UserRepository;
 import ru.practicum.shareit.user.dto.UserDto;
 
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 @AllArgsConstructor
 @Service
@@ -17,32 +19,46 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Collection<User> findAllUser() {
-        return userRepository.findAllUser();
+        return userRepository.findAll();
     }
 
     @Override
-    public User findUser(Long userId) {
-        return userRepository.findUser(userId);
+    public Optional<User> findUser(Long userId) {
+        return userRepository.findById(userId);
     }
 
     @Override
     public User creatUser(User user) {
         validateUser(user);
-        return userRepository.creatUser(user);
+        return userRepository.save(user);
     }
 
     @Override
     public User updateUser(Long userId, UserDto user) {
         validateUserUpdate(userId, user);
-        return userRepository.updateUser(userId, user);
+        User userNew = getUserByIdOrThrow(userId);
+        if (user.getEmail() != null) {
+            userNew.setEmail(user.getEmail());
+        }
+
+        if (user.getName() != null) {
+            userNew.setName(user.getName());
+        }
+        return userRepository.save(userNew);
+    }
+
+    @Override
+    public User getUserByIdOrThrow(Long userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException("User not found with ID: " + userId));
     }
 
     @Override
     public void deleteUser(Long userId) {
-        if (userRepository.findUser(userId) == null) {
+        if (userRepository.getById(userId) == null) {
             throw new NullPointerException();
         }
-        userRepository.deleteUser(userId);
+        userRepository.deleteById(userId);
     }
 
     private void validateUser(User user) {
@@ -58,7 +74,7 @@ public class UserServiceImpl implements UserService {
     }
 
     private void validateUserUpdate(Long userId, UserDto user) {
-        User userOld = userRepository.findUser(userId);
+        User userOld = userRepository.getById(userId);
         if (user.getEmail() != null && user.getName() != null) {
             userOld.setName(user.getName());
             userOld.setEmail(user.getEmail());
@@ -70,7 +86,7 @@ public class UserServiceImpl implements UserService {
     }
 
     private void validateUserUpdateEmail(User user) {
-        List<User> listUser = new LinkedList<>(userRepository.findAllUser());
+        List<User> listUser = new LinkedList<>(userRepository.findAll());
         for (User users : listUser) {
             if (users.getEmail().equals(user.getEmail()) && !users.getId().equals(user.getId())) {
                 throw new UnsupportedOperationException();

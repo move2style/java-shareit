@@ -5,17 +5,19 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.practicum.shareit.item.model.Comment;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ItemDto {
+public class ItemUserDto {
     Long id;
     Long owner;
     String name;
     String description;
     Boolean available;
-    String request;
-    List<Comment> commentList;
+    LocalDateTime lastBooking;
+    LocalDateTime nextBooking;
+    List<Comment> comments;
 }
