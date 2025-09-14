@@ -148,7 +148,7 @@ public class ItemServiceImpl implements ItemService {
         Item item = itemRepository.findById(itemId)
                 .orElseThrow(() -> new NotFoundException("Item not found with ID: " + itemId));
         LocalDateTime now = LocalDateTime.now();
-        if (item.getOwner() == userId) {
+        if (item.getOwner().equals(userId)) {
             throw new ValidationException("You cannot comment on your own item");
         }
 
