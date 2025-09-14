@@ -18,4 +18,3 @@ public class BookingDto {
     Long booker;
     BookingStatus status;
 }
-   
