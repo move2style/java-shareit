@@ -12,12 +12,12 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ItemUserDto {
-    Long id;
-    Long owner;
-    String name;
-    String description;
-    Boolean available;
-    LocalDateTime lastBooking;
-    LocalDateTime nextBooking;
-    List<Comment> comments;
+    private Long id;
+    private Long owner;
+    private String name;
+    private String description;
+    private Boolean available;
+   private LocalDateTime lastBooking;
+   private LocalDateTime nextBooking;
+   private List<Comment> comments;
 }

@@ -11,11 +11,11 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ItemDto {
-    Long id;
-    Long owner;
-    String name;
-    String description;
-    Boolean available;
-    String request;
-    List<Comment> commentList;
+    private Long id;
+    private Long owner;
+    private  String name;
+    private String description;
+    private  Boolean available;
+    private String request;
+    private  List<Comment> commentList;
 }

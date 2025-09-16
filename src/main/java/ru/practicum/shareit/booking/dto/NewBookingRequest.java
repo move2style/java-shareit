@@ -9,13 +9,13 @@ import java.time.LocalDateTime;
 @Data
 public class NewBookingRequest {
     @NotNull(message = "Id вещи не должен быть пустым")
-    Long itemId;
+    private Long itemId;
 
     @NotNull(message = "Укажите дату и время начала бронирования")
     @Future(message = "Дата начала бронирования должна быть в будущем")
-    LocalDateTime start;
+    private LocalDateTime start;
 
     @NotNull(message = "Укажите дату и время окончания бронирования")
     @Future(message = "Дата окончания бронирования должна быть в будущем")
-    LocalDateTime end;
+    private LocalDateTime end;
 }

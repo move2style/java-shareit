@@ -13,15 +13,15 @@ import lombok.*;
 public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
     @Column(name = "owner_id")
-    Long owner;
+    private Long owner;
     @Column
-    String name;
+    private  String name;
     @Column
-    String description;
+    private String description;
     @Column
-    Boolean available;
+    private Boolean available;
     @Column(name = "request_id")
-    Long request;
+    private Long request;
 }

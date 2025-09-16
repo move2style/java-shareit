@@ -58,9 +58,9 @@ public class BookingServiceImpl implements BookingService {
         booking.setBooker(booker);
         booking = bookingRepository.save(booking);
 
-        BookingCreateDto bookingCreat = bookingMapper.fromNewRequest(request, item, booker, WAITING);
-        bookingCreat.setId(booking.getId());
-        return bookingCreat;
+        BookingCreateDto bookingCreate = bookingMapper.fromNewRequest(request, item, booker, WAITING);
+        bookingCreate.setId(booking.getId());
+        return bookingCreate;
     }
 
     @Override
@@ -77,11 +77,7 @@ public class BookingServiceImpl implements BookingService {
         if (!booking.getItem().getOwner().equals(userId)) {
             throw new ForbiddenException("Only the owner can approve or reject the booking");
         } else if (userId.equals(booking.getItem().getOwner())) {
-            if (approved) {
-                booking.setStatus(APPROVED);
-            } else {
-                booking.setStatus(REJECTED);
-            }
+            booking.setStatus(approved ? APPROVED : REJECTED);
         }
         bookingRepository.save(booking);
         return bookingMapper.toBookingCreateDto(booking, booking.getItem(), booking.getBooker());
@@ -116,74 +112,45 @@ public class BookingServiceImpl implements BookingService {
 
         switch (state) {
             case CURRENT:
-                List<BookingCreateDto> bookingCreateDtos = new ArrayList<>();
-                List<Booking> booking = bookingRepository.findByBookerAndStartLessThanEqualAndEndGreaterThanEqual(userService.getUserByIdOrThrow(userId),
+                List<Booking> bookingCurrent = bookingRepository.findByBookerAndStartLessThanEqualAndEndGreaterThanEqual(userService.getUserByIdOrThrow(userId),
                         today, today);
 
-                for (Booking booking1 : booking) {
-                    User user = userService.getUserByIdOrThrow(userId);
-                    bookingCreateDtos.add(bookingMapper.toBookingCreateDto(booking1,
-                            booking1.getItem(),
-                            user));
-                }
-
-                return bookingCreateDtos;
+                return forStateValidate(bookingCurrent, userId);
             case PAST:
-                List<BookingCreateDto> bookingCreateDtos1 = new ArrayList<>();
-                List<Booking> booking1 = bookingRepository.findByBookerAndEndBefore(userService.getUserByIdOrThrow(userId),
+                List<Booking> bookingPast = bookingRepository.findByBookerAndEndBefore(userService.getUserByIdOrThrow(userId),
                         today);
 
-                for (Booking booking2 : booking1) {
-                    User user = userService.getUserByIdOrThrow(userId);
-                    bookingCreateDtos1.add(bookingMapper.toBookingCreateDto(booking2, booking2.getItem(),
-                            user));
-                }
-
-                return bookingCreateDtos1;
+                return forStateValidate(bookingPast, userId);
             case FUTURE:
-                List<BookingCreateDto> bookingCreateDtos2 = new ArrayList<>();
-                List<Booking> booking2 = bookingRepository.findByBookerAndStartAfter(userService.getUserByIdOrThrow(userId),
+                List<Booking> bookingFuture = bookingRepository.findByBookerAndStartAfter(userService.getUserByIdOrThrow(userId),
                         today);
 
-                for (Booking booking3 : booking2) {
-                    User user = userService.getUserByIdOrThrow(userId);
-                    bookingCreateDtos2.add(bookingMapper.toBookingCreateDto(booking3,
-                            booking3.getItem(),
-                            user));
-                }
-
-                return bookingCreateDtos2;
+                return forStateValidate(bookingFuture, userId);
             case WAITING:
-                List<BookingCreateDto> bookingCreateDtos3 = new ArrayList<>();
-                List<Booking> booking3 = bookingRepository.findByBookerAndStatus(userService.getUserByIdOrThrow(userId),
+                List<Booking> bookingWaiting = bookingRepository.findByBookerAndStatus(userService.getUserByIdOrThrow(userId),
                         WAITING);
 
-                for (Booking booking4 : booking3) {
-                    User user = userService.getUserByIdOrThrow(userId);
-                    bookingCreateDtos3.add(bookingMapper.toBookingCreateDto(booking4, booking4.getItem(), user));
-                }
-
-                return bookingCreateDtos3;
+                return forStateValidate(bookingWaiting, userId);
             case REJECTED:
-                List<BookingCreateDto> bookingCreateDtos4 = new ArrayList<>();
-                List<Booking> booking4 = bookingRepository.findByBookerAndStatus(userService.getUserByIdOrThrow(userId),
+                List<Booking> bookingRejected = bookingRepository.findByBookerAndStatus(userService.getUserByIdOrThrow(userId),
                         REJECTED);
 
-                for (Booking booking5 : booking4) {
-                    User user = userService.getUserByIdOrThrow(userId);
-                    bookingCreateDtos4.add(bookingMapper.toBookingCreateDto(booking5, booking5.getItem(), user));
-                }
-
-                return bookingCreateDtos4;
+                return forStateValidate(bookingRejected, userId);
             default:
-                List<BookingCreateDto> bookingCreateDtos5 = new ArrayList<>();
-                List<Booking> booking5 = bookingRepository.findByBooker(userService.getUserByIdOrThrow(userId));
+                List<Booking> bookingDefault = bookingRepository.findByBooker(userService.getUserByIdOrThrow(userId));
 
-                for (Booking booking6 : booking5) {
-                    User user = userService.getUserByIdOrThrow(userId);
-                    bookingCreateDtos5.add(bookingMapper.toBookingCreateDto(booking6, booking6.getItem(), user));
-                }
-                return bookingCreateDtos5;
+                return forStateValidate(bookingDefault, userId);
         }
+    }
+
+    private List<BookingCreateDto> forStateValidate(List<Booking> bookingList, Long userId) {
+        List<BookingCreateDto> bookingCreateDtos = new ArrayList<>();
+
+        for (Booking booking : bookingList) {
+            User user = userService.getUserByIdOrThrow(userId);
+            bookingCreateDtos.add(bookingMapper.toBookingCreateDto(booking, booking.getItem(), user));
+        }
+
+        return bookingCreateDtos;
     }
 }
