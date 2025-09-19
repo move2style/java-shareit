@@ -2,9 +2,11 @@ package ru.practicum.shareit.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.service.UserService;
 
 import java.util.Collection;
+import java.util.Optional;
 
 import static ru.practicum.shareit.user.dto.UserMapper.toDto;
 
@@ -19,7 +21,7 @@ public class UserController {
     }
 
     @GetMapping("/{userId}")
-    public User getUser(@PathVariable Long userId) {
+    public Optional<User> getUser(@PathVariable Long userId) {
         return userService.findUser(userId);
     }
 

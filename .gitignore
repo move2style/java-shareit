@@ -1,8 +1,13 @@
 HELP.md
+db/
 target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
+        *.class
+        *.jar
+        *.DS_Store
+        *.mv.db
 
 ### STS ###
 .apt_generated
