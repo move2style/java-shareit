@@ -10,7 +10,7 @@ import lombok.*;
 public class Item {
     private Long id;
     private Long owner;
-    private  String name;
+    private String name;
     private String description;
     private Boolean available;
     private Long request;

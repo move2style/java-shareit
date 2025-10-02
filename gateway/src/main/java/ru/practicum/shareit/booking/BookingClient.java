@@ -39,7 +39,7 @@ public class BookingClient extends BaseClient {
         return post("", userId, requestDto);
     }
 
-    public ResponseEntity<Object> findBookingId(Long bookingId, Long userId ) {
+    public ResponseEntity<Object> findBookingId(Long bookingId, Long userId) {
         System.out.println("findBookingId called with userId=" + userId + ", bookingId=" + bookingId);
         return get("/" + bookingId, userId);
     }

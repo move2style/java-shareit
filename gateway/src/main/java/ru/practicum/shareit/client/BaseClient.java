@@ -5,8 +5,8 @@ import org.springframework.lang.Nullable;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 import ru.practicum.shareit.booking.dto.NewBookingRequest;
-import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.dto.Comment;
+import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.request.dto.ItemRequestDto;
 
 import java.util.List;
@@ -52,6 +52,7 @@ public class BaseClient {
     protected <T> ResponseEntity<Object> post(String path, Long userId, ItemDto body) {
         return post(path, userId, null, body);
     }
+
     protected <T> ResponseEntity<Object> post(String path, Long userId, ItemRequestDto body) {
         return post(path, userId, null, body);
     }

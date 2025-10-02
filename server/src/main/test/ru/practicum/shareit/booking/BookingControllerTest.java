@@ -1,14 +1,11 @@
 package ru.practicum.shareit.booking;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.practicum.shareit.booking.dto.BookingCreateDto;
 import ru.practicum.shareit.booking.dto.NewBookingRequest;
@@ -17,27 +14,24 @@ import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.user.model.User;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
-import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(controllers = BookingController.class)
 public class BookingControllerTest {
 
+    private final String userIdHeader = "X-Sharer-User-Id";
     @Autowired
     private MockMvc mockMvc;
-
     @Autowired
     private ObjectMapper objectMapper;
-
     @MockBean
     private BookingService bookingService;
-
-    private final String userIdHeader = "X-Sharer-User-Id";
 
     @Test
     void createBookingTest() throws Exception {
