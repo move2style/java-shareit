@@ -45,13 +45,13 @@ public class BookingServiceImpl implements BookingService {
             throw new IllegalArgumentException("Start date must be before end date.");
         }
 
-        if (request.getStart().isBefore(now)) {
-            throw new IllegalArgumentException("Start date cannot be in the past.");
-        }
-
-        if (request.getEnd().isBefore(now)) {
-            throw new IllegalArgumentException("End date cannot be in the past.");
-        }
+//        if (request.getStart().isBefore(now)) {
+//            throw new IllegalArgumentException("Start date cannot be in the past.");
+//        }
+//
+//        if (request.getEnd().isBefore(now)) {
+//            throw new IllegalArgumentException("End date cannot be in the past.");
+//        }
 
         Booking booking = bookingMapper.toBooking(request, item.getId(), userId, WAITING);
         booking.setItem(item);

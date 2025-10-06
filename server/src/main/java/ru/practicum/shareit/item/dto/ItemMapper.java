@@ -16,9 +16,13 @@ public interface ItemMapper {
 
     @Mappings({
             @Mapping(target = "authorName",
-                    expression = "java(comment.getAuthor().getName())")
+                    expression = "java(comment.getAuthor() != null ? comment.getAuthor().getName() : null)")
     })
     CommentDto toCommentDto(Comment comment);
 
+    @Mappings({
+            @Mapping(target = "itemId", source = "id"),
+            @Mapping(target = "ownerId", source = "owner")
+    })
     ItemAnswerDto toItemAnswerDto(Item item);
 }

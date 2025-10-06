@@ -68,6 +68,76 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <jvmArguments>-XX:+EnableDynamicAgentLoading</jvmArguments>
+                </configuration>
+            </plugin>
+
+            <!-- JaCoCo плагин добавлен в основной build -->
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.8.13</version>
+                <configuration>
+                    <rules>
+                        <rule>
+                            <element>BUNDLE</element>
+                            <limits>
+                                <limit>
+                                    <counter>INSTRUCTION</counter>
+                                    <value>COVEREDRATIO</value>
+                                    <minimum>0.01</minimum>
+                                </limit>
+                                <limit>
+                                    <counter>LINE</counter>
+                                    <value>COVEREDRATIO</value>
+                                    <minimum>0.9</minimum>
+                                </limit>
+                                <limit>
+                                    <counter>BRANCH</counter>
+                                    <value>COVEREDRATIO</value>
+                                    <minimum>0.6</minimum>
+                                </limit>
+                                <limit>
+                                    <counter>COMPLEXITY</counter>
+                                    <value>COVEREDRATIO</value>
+                                    <minimum>0.6</minimum>
+                                </limit>
+                                <limit>
+                                    <counter>METHOD</counter>
+                                    <value>COVEREDRATIO</value>
+                                    <minimum>0.7</minimum>
+                                </limit>
+                                <limit>
+                                    <counter>CLASS</counter>
+                                    <value>MISSEDCOUNT</value>
+                                    <maximum>1</maximum>
+                                </limit>
+                            </limits>
+                        </rule>
+                    </rules>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>jacoco-initialize</id>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>jacoco-check</id>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>jacoco-report</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
@@ -77,10 +147,7 @@
             <id>coverage</id>
             <build>
                 <plugins>
-                    <plugin>
-                        <groupId>org.jacoco</groupId>
-                        <artifactId>jacoco-maven-plugin</artifactId>
-                    </plugin>
+                    <!-- Профиль coverage теперь может содержать дополнительные настройки -->
                 </plugins>
             </build>
         </profile>
