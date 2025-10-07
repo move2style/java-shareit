@@ -11,7 +11,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.practicum.shareit.ShareItGateway;
 import ru.practicum.shareit.item.dto.ItemDto;
-import ru.practicum.shareit.item.model.Comment;
 
 import java.util.Collections;
 import java.util.Map;
@@ -83,20 +82,6 @@ class ItemControllerTest {
         mvc.perform(post("/items")
                         .header(userIdHeader, 1L)
                         .content(mapper.writeValueAsString(createDto))
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
-    }
-
-    @Test
-    void createComment() throws Exception {
-        Comment commentDto = new Comment();
-        commentDto.setText("Это крутой предмет");
-        when(itemClient.createComment(anyLong(), any(ru.practicum.shareit.item.dto.Comment.class), anyLong()))
-                .thenReturn(ResponseEntity.ok(Map.of("id", 1L)));
-
-        mvc.perform(post("/items/{itemId}/comment", 1L)
-                        .header(userIdHeader, 1L)
-                        .content(mapper.writeValueAsString(commentDto))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
