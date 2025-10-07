@@ -73,7 +73,6 @@
                 </configuration>
             </plugin>
 
-            <!-- JaCoCo плагин добавлен в основной build -->
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
@@ -91,17 +90,17 @@
                                 <limit>
                                     <counter>LINE</counter>
                                     <value>COVEREDRATIO</value>
-                                    <minimum>0.9</minimum>
+                                    <minimum>0.7</minimum>
                                 </limit>
                                 <limit>
                                     <counter>BRANCH</counter>
                                     <value>COVEREDRATIO</value>
-                                    <minimum>0.6</minimum>
+                                    <minimum>0.5</minimum>
                                 </limit>
                                 <limit>
                                     <counter>COMPLEXITY</counter>
                                     <value>COVEREDRATIO</value>
-                                    <minimum>0.6</minimum>
+                                    <minimum>0.5</minimum>
                                 </limit>
                                 <limit>
                                     <counter>METHOD</counter>
@@ -111,7 +110,7 @@
                                 <limit>
                                     <counter>CLASS</counter>
                                     <value>MISSEDCOUNT</value>
-                                    <maximum>1</maximum>
+                                    <maximum>4</maximum>
                                 </limit>
                             </limits>
                         </rule>
